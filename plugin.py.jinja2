@@ -1,0 +1,22 @@
+from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
+from PySide6.QtWidgets import QWidget
+
+from {{ module_name }} import {{ class_name }}
+
+
+TOOLTIP = "{{ class_name }} Widget"
+DOM_XML = """
+<ui language="c++">
+ <widget class="{{ class_name }}" name="{{ class_name }}">
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+"""
+
+QPyDesignerCustomWidgetCollection().registerCustomWidget(
+    {{ class_name }},
+    module="app.widgets.auto.{{ module_name }}",
+    tool_tip=TOOLTIP,
+    xml=DOM_XML,
+)
