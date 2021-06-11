@@ -1,0 +1,4 @@
+QHeaderView::section {
+  padding: 0px;
+  text-transform: none;
+}

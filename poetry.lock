@@ -450,6 +450,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "qt-material"
+version = "2.8.8"
+description = "Qt Stylesheet for PySide6, PySide2 and PyQt5."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Jinja2 = "*"
+
+[[package]]
 name = "regex"
 version = "2021.4.4"
 description = "Alternative regular expression module, to replace re."
@@ -545,7 +556,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9,<3.10"
-content-hash = "72e6997313ab52092613a93d95aa9ce03c1a622093947587a11379ac9dc8d790"
+content-hash = "d1da0e412a70b9057930eefeea2d06942ef601c532b484c00090c687155675c7"
 
 [metadata.files]
 altgraph = [
@@ -850,6 +861,10 @@ pytz = [
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
     {file = "pywin32_ctypes-0.2.0-py2.py3-none-any.whl", hash = "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"},
+]
+qt-material = [
+    {file = "qt-material-2.8.8.tar.gz", hash = "sha256:84869611954f2ac50071aacd61a533e2d512712774edd0b9e386160590168163"},
+    {file = "qt_material-2.8.8-py3-none-any.whl", hash = "sha256:aef8a434d294f5e1367b71bfac9fe6ce78dbd2688b9b474b35e1bb5ae882c6d9"},
 ]
 regex = [
     {file = "regex-2021.4.4-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:619d71c59a78b84d7f18891fe914446d07edd48dc8328c8e149cbe0929b4e000"},
