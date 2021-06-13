@@ -17,6 +17,12 @@ jobs:
       - name: Install poetry
         run: pip install poetry
 
+      - name: Setup poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: List poetry config
+        run: poetry config --list
+
       - name: Install dependencies
         run: poetry install
 
