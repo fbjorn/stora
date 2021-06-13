@@ -68,7 +68,7 @@ def designer(ctx):
     ctx.run("pyside6-designer")
 
 
-@task
+@task(pre=[compile_ui])
 def pyinstaller(ctx):
     cmd = [
         "pyinstaller",

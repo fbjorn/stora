@@ -1,0 +1,40 @@
+name: Build and release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  BuildAndRelease:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Setup poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: List poetry config
+        run: poetry config --list
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build package
+        run: poetry run invoke build
+
+      - name: Zip package
+        run: cd dist && zip -9 Stora.app.zip -r Stora.app && cd -
+
+      - uses: "marvinpinto/action-automatic-releases@v1.2.1"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            dist/Stora.app.zip
