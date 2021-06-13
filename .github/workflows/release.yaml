@@ -2,8 +2,8 @@ name: Build and release
 
 on:
   push:
-    branches:
-      - ci
+    tags:
+      - "v*"
 
 jobs:
   BuildAndRelease:
@@ -28,3 +28,10 @@ jobs:
 
       - name: Build package
         run: poetry run invoke build
+
+      - uses: "marvinpinto/action-automatic-releases@v1.2.1"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            dist/Stora.app
