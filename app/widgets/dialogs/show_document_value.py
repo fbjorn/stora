@@ -7,7 +7,7 @@ from app.utils import apply_theme
 from app.widgets.auto.dialog_document_value import Ui_Dialog
 
 
-class DocumentValueDialog(QDialog, Ui_Dialog):
+class ShowDocumentValueDialog(QDialog, Ui_Dialog):
     def __init__(self, value, *args):
         super().__init__(*args)
 

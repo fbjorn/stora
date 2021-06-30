@@ -28,8 +28,7 @@ def generate_plugins(ctx):
     template = Template((ROOT / "plugin.py.jinja2").read_text())
 
     for src in COMPILED_WIDGETS_DIR.glob("*.py"):
-        skipped = ("__init__.py", "main_window.py")
-        if src.name in skipped or "register" in src.name or "dialog" in src.name:
+        if src.name.startswith(("register", "dialog", "_", "main_window")):
             continue
 
         print(f"Generating QtDesigner plugin for {src.name}")
@@ -41,24 +40,55 @@ def generate_plugins(ctx):
         )
         src.with_name(f"register_{src.name}").write_text(out)
 
-        class_definition = dedent(
-            f"""
-
-        class {class_name}(QWidget, Ui_{class_name}):
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-                self.setupUi(self)
-        """
-        )
-        src.write_text(content + class_definition)
-
 
 @task(post=[generate_plugins, reformat_widgets_code])
 def compile_ui(ctx):
     ui_dir = Path(__file__).parent / "ui"
     for ui_path in ui_dir.glob("*.ui"):
-        out_path = (COMPILED_WIDGETS_DIR / ui_path.name).with_suffix(".py")
-        ctx.run(f"pyside6-uic {ui_path} -o {out_path}", echo=True)
+        py_path = (COMPILED_WIDGETS_DIR / ui_path.name).with_suffix(".py")
+        ctx.run(f"pyside6-uic {ui_path} -o {py_path}", echo=True)
+
+        # create custom classes so QtDesigner is able to import them later
+        py_content = py_path.read_text()
+        match = re.search(r"class Ui_(.*?)\(", py_content)
+        class_name = match.group(1)
+        patched = py_content.replace("from app.widgets.auto.", "from app.widgets.")
+        if not py_path.name.startswith("dialog"):
+            patched += dedent(
+                f"""
+
+                    class {class_name}(QWidget, Ui_{class_name}):
+                        def __init__(self, *args, **kwargs):
+                            super().__init__(*args, **kwargs)
+                            self.setupUi(self)
+                    """
+            )
+        py_path.write_text(patched)
+
+        # Create new widget file if needed
+        widget_file = ROOT / "app" / "widgets" / py_path.name
+        if py_path.name.startswith("dialog"):
+            widget_file = (
+                ROOT
+                / "app"
+                / "widgets"
+                / "dialogs"
+                / py_path.name.removeprefix("dialog_")
+            )
+        if not widget_file.exists():
+            print(f"Creating {widget_file}")
+            name = py_path.with_suffix("").name
+            content = dedent(
+                f"""
+            from app.widgets.auto.{name} import {class_name} as {class_name}Auto
+
+            class {class_name}({class_name}Auto):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+            """
+            )
+            widget_file.write_text(content)
 
 
 @task(post=[compile_ui])
@@ -97,6 +127,7 @@ def build(ctx):
             print(f)
             ctx.run(f"cp {f} {out}")
 
+    # https://github.com/pyinstaller/pyinstaller/issues/5414#issuecomment-859347159
     print("Copying libraries")
     copy_libs("PySide6")
     copy_libs("shiboken6")
