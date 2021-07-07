@@ -160,3 +160,16 @@ def build(ctx):
     for d in (qt_out / "plugins").glob("*"):
         if d.name not in plugins:
             rmtree(d)
+
+
+@task
+def release(ctx):
+    toml = Path("pyproject.toml").read_text()
+    match = re.search(r'version = "(.*?)"', toml)
+    if match:
+        version = match.group(1)
+        print(f"Releasing {version}")
+        ctx.run(f"git tag {version}", echo=True)
+        ctx.run(f"git push origin {version}", echo=True)
+    else:
+        print("Failed to find version in the pyproject.toml")
