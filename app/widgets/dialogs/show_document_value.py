@@ -4,11 +4,11 @@ from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QDialog
 
 from app.utils import apply_theme
-from app.widgets.auto.dialog_document_value import Ui_Dialog
+from app.widgets.auto.dialog_show_document_value import Ui_Dialog
 
 
 class ShowDocumentValueDialog(QDialog, Ui_Dialog):
-    def __init__(self, value, *args):
+    def __init__(self, key: str, value, *args):
         super().__init__(*args)
 
         self.setupUi(self)
@@ -16,16 +16,14 @@ class ShowDocumentValueDialog(QDialog, Ui_Dialog):
 
         self._value = value
 
-        self.lbl_formatter.setText(self.pretty_value)
-        self.te_value.setText(str(self._value))
-        self.lbl_formatter.setFocus()
+        self.setWindowTitle(key)
+        self.lbl_content.setText(self.pretty_value)
+        self.lbl_content.setFocus()
 
     @property
     def pretty_value(self) -> str:
         if isinstance(self._value, (list, dict)):
             return json.dumps(self._value, indent=2)
-        # if hasattr(self._value, "strftime"):
-        #     return self._value.strftime("%m-%d-%Y - %H:%M:%S")
         return str(self._value)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
+    <width>717</width>
     <height>87</height>
    </rect>
   </property>
@@ -108,101 +108,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QStackedWidget" name="w_stacked">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="DocumentValueInputWidget" name="w_inp">
+       <property name="baseSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
        </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
-       <property name="currentIndex">
-        <number>4</number>
-       </property>
-       <widget class="QWidget" name="p_str">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLineEdit" name="inp_str">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="p_bool">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QCheckBox" name="inp_bool">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="p_number">
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLineEdit" name="inp_number">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="p_date">
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QDateTimeEdit" name="inp_date">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="p_map">
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QLineEdit" name="inp_map">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
       </widget>
      </item>
      <item>
@@ -220,7 +132,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item alignment="Qt::AlignHCenter">
     <widget class="QLabel" name="lbl_error">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -238,6 +150,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DocumentValueInputWidget</class>
+   <extends>QWidget</extends>
+   <header>app.widgets.auto.document_value_input</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

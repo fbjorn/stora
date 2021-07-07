@@ -1,6 +1,3 @@
-import datetime
-import json
-
 from PySide6.QtCore import Slot
 
 from app.widgets.auto.add_document_item import (
@@ -20,59 +17,28 @@ class AddDocumentItemWidget(AddDocumentItemWidgetAuto):
         if name:
             self.inp_name.setText(name)
 
+        self.w_inp.setMaximumWidth(200)
+        self.w_inp.inp_map.setMaximumHeight(self.w_inp.inp_str.height())
+
     def _connect_slots(self):
         self.dd_type.currentIndexChanged.connect(self.on_dropdown_changed)
-        self.inp_number.textEdited.connect(self.validate)
-        self.inp_map.textEdited.connect(self.validate)
+        self.w_inp.signals.validation_error.connect(self.show_error)
 
     @Slot()
     def on_dropdown_changed(self, index: int):
-        self.w_stacked.setCurrentIndex(index)
-        self.clear_inputs()
+        self.w_inp.w_stacked.setCurrentIndex(index)
+        self.w_inp.clear_inputs()
 
     def show_error(self, text: str):
         self.lbl_error.setText(text)
         self.lbl_error.setVisible(text != "")
 
     def clear_inputs(self):
-        self.inp_str.setText("")
-        self.inp_number.setText("0")
-        self.inp_map.setText("{}")
-        self.inp_bool.setChecked(False)
-        self.inp_date.setDateTime(datetime.datetime.utcnow())
-
-    def validate(self):
-        if self.w_stacked.currentWidget() == self.p_number:
-            try:
-                float(self.inp_number.text())
-            except ValueError:
-                self.show_error("Please enter a valid number")
-                return False
-        elif self.w_stacked.currentWidget() == self.p_map:
-            try:
-                json.loads(self.inp_map.text())
-            except ValueError:
-                self.show_error("Please enter a valid map")
-                return False
-
-        self.show_error("")
-        return True
+        self.w_inp.clear_inputs()
 
     @property
     def value(self):
-        if not self.validate():
-            raise ValueError("Field validation failed")
-        if self.w_stacked.currentWidget() == self.p_str:
-            return self.inp_str.text()
-        elif self.w_stacked.currentWidget() == self.p_number:
-            num = self.inp_number.text()
-            return float(num) if "." in num else int(num)
-        elif self.w_stacked.currentWidget() == self.p_map:
-            return json.loads(self.inp_map.text())
-        elif self.w_stacked.currentWidget() == self.p_bool:
-            return self.inp_bool.isChecked()
-        elif self.w_stacked.currentWidget() == self.p_date:
-            return self.inp_date.dateTime().toPython()
+        return self.w_inp.value
 
     @property
     def key(self) -> str:

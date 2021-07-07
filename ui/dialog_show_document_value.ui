@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Field value</string>
+   <string>Document value</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -31,12 +31,12 @@
         <x>0</x>
         <y>0</y>
         <width>474</width>
-        <height>264</height>
+        <height>374</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="lbl_formatter">
+        <widget class="QLabel" name="lbl_content">
          <property name="text">
           <string/>
          </property>
@@ -49,20 +49,13 @@
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+         </property>
         </widget>
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="te_value">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>100</height>
-      </size>
-     </property>
     </widget>
    </item>
   </layout>

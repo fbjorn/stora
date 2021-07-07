@@ -67,6 +67,10 @@ class AddDocumentDialog(QDialog, Ui_Dialog):
         return wgt
 
     def accept(self) -> None:
+        if self.create_document():
+            super().accept()
+
+    def create_document(self) -> bool:
         try:
             document = {w.key: w.value for w in self.input_widgets}
         except ValueError:
@@ -74,13 +78,14 @@ class AddDocumentDialog(QDialog, Ui_Dialog):
                 "Document is incorrect, please check validation errors "
                 "or that all fields has a name"
             )
-            return
+            return False
 
+        id_ = document.pop("id", None)
         try:
-            self.collection.add(document)
+            self.collection.add(document, document_id=id_)
         except Exception:
             show_error("Failed to create document")
             logger.exception("Failed to create document")
-            return
+            return False
 
-        super().accept()
+        return True
